@@ -2,7 +2,6 @@
 
 >快速开始
 ```
-go mod init [项目名]
 go mod vendor
 go mod tidy
 
