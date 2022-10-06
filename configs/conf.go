@@ -11,9 +11,11 @@ import (
 type Config struct {
 	RunMod string        `yaml:"runMod"`
 	Mysql  *MysqlConfig  `yaml:"mysql"`
-	Reids  *RedisConfig  `yaml:"redis"`
+	Redis  *RedisConfig  `yaml:"redis"`
 	Logs   *LogsConfig   `yaml:"logs"`
 	Device *DeviceConfig `yaml:"device"`
+	JWT    *JwtConfig    `yaml:"jwt"`
+	
 }
 
 type MysqlConfig struct {
@@ -38,6 +40,10 @@ type LogsConfig struct {
 
 type DeviceConfig struct {
 	Cpu int `yaml:"Cpu"`
+}
+
+type JwtConfig struct {
+	Secret string `yaml:"Secret"`
 }
 
 func ReadYaml() *Config {

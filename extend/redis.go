@@ -47,9 +47,9 @@ func PoolInitRedis(server string, rdb int, password string) *redis.Pool {
 }
 
 func StartRedis() {
-	Rdb_url := configs.ReadYaml().Reids.Host + ":" + configs.ReadYaml().Reids.Port
-	Rdb_db, _ := strconv.Atoi(configs.ReadYaml().Reids.Db)
-	Rdb_pwd := configs.ReadYaml().Reids.Password
+	Rdb_url := configs.ReadYaml().Redis.Host + ":" + configs.ReadYaml().Redis.Port
+	Rdb_db, _ := strconv.Atoi(configs.ReadYaml().Redis.Db)
+	Rdb_pwd := configs.ReadYaml().Redis.Password
 	Pool = PoolInitRedis(Rdb_url, Rdb_db, Rdb_pwd)
 	Rdb = Pool.Get()
 }

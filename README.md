@@ -20,7 +20,7 @@ config.yaml.bak 修改为 config.yaml
 go mod tidy
 go mod vendor
 
-# 热更新[go install github.com/pilu/fresh@laster]
+# 热更新[go install github.com/pilu/fresh@latest]
 fresh 
 ```
 
@@ -98,6 +98,29 @@ func LoginM(c *gin.Context) interface{} {
 }
 ```
 # jwt
+
+> 中间件使用
+```
+# route/route.go
+import "gtp/extend"
+
+route.Use(extend.JWTAuth())
+
+或 在单一路由下使用
+
+route.POST("/logout", extend.JWTAuth(),Logout)
+
+```
+
+> 加密方法
+```
+func GenerateToken(user string) (string, error)
+```
+
+> 解密方法
+```
+func ParseToken(tokenStr string) (jwt.MapClaims, error)
+```
 
 # 数据库连接
 ```

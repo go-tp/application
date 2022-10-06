@@ -1,12 +1,11 @@
 package extend
 
 import (
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
-)
-
-const (
-	SECRETKEY = "gtp"
+	"gtp/configs"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"fmt"
 )
 
 /*
@@ -22,27 +21,65 @@ claims := jwt.MapClaims{
 	}
 }
 */
-// 创建token
-func CreateJwt(claims jwt.MapClaims) (string, error) {
 
-	// 生成token
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenStr, err := token.SignedString([]byte(SECRETKEY))
 
-	if err != nil {
-		return tokenStr, err
-	}
-
-	return tokenStr, nil
+// 生成jwt
+func GenerateToken(user string) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": user,
+    // "exp":      time.Now().Add(time.Hour * 2).Unix(),// 可以添加过期时间
+	})
+	secret := configs.ReadYaml().JWT.Secret
+	return token.SignedString([]byte(secret))//对应的字符串请自行生成，最后足够使用加密后的字符串
 }
 
-// 解析token
+// 中间件身份认证
+func JWTAuth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+	   //拿到token
+	   tokenStr := c.Request.Header.Get("Authorization")
+	   
+	   if tokenStr == "" {
+		  c.JSON(http.StatusOK, gin.H{
+			 "status": -1,
+			 "msg":    "token为空，请携带token",
+			 "data":   nil,
+		  })
+		  c.Abort()
+		  return
+	   }
+	   tokenStr = tokenStr[len("Bearer "):]
+
+	   
+
+	   token1,_ := ParseToken(tokenStr)
+	   username,err := token1["username"]
+	   if(err != true){
+			c.JSON(http.StatusOK, gin.H{
+				"status": -1,
+				"msg":    "token错误",
+				"data":   nil,
+			})
+			c.Abort()
+			return
+	   }
+
+	   fmt.Println("username:",username)
+	   fmt.Println("err:",err)
+		// fmt.Println(token.Claims.(jwt.MapClaims)["username"])
+		return
+	}
+ }
+
+
+ // jwt解密
 func ParseToken(tokenStr string) (jwt.MapClaims, error) {
+	secret := configs.ReadYaml().JWT.Secret
 	token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", t.Header["alg"])
 		}
-		return []byte(SECRETKEY), nil
+		return []byte(secret), nil
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {

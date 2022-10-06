@@ -3,6 +3,7 @@ package route
 import (
 	"github.com/gin-gonic/gin"
 	."gtp/app"
+	"gtp/extend"
 )
 
 func Init() *gin.Engine {
@@ -15,12 +16,14 @@ func Init() *gin.Engine {
 	{
 		base.GET("/", Index)
 		base.POST("/login", Login)
-		base.POST("/logout", Logout)
+		// 单方法使用jwt中间件
+		base.POST("/logout", extend.JWTAuth(),Logout)
 		base.POST("/menu", Menu)
 	}
 	
 	apiArticle := route.Group("/api")
-	apiArticle.Use()
+	// 一组使用jwt验证
+	apiArticle.Use(extend.JWTAuth())
 	{
 		apiArticle.POST("/article/getTopic", ApiGetArtList)
 		apiArticle.POST("/article/getArtList", ApiGetTopic)

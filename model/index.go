@@ -84,5 +84,16 @@ func IndexM(c *gin.Context) interface{} {
 
 
 func LoginM(c *gin.Context) interface{} {
-	return "login"
+	// jwt
+	// 中间件需要验证jwt ParseToken
+	// ctx := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDczMjQ5MjMsInVpZCI6IjEifQ.ooWMRCN_ZVvHxKMX3OnuJxviYEVUI8xCScaM3M0bRXY"
+
+	// claims,_ := extend.ParseToken(ctx);
+	// fmt.Println(claims)
+
+	// 此方法需要根据用户登录情况 创建token
+	UserId := "1"
+	// 生成jwt-token
+	token,_ := extend.GenerateToken(UserId)
+	return token
 }
