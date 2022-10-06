@@ -7,6 +7,8 @@ import (
 )
 
 func Index(c *gin.Context){
+
+	//c.String(200, "login")
 	data := model.IndexM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{

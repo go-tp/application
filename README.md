@@ -33,3 +33,29 @@
 ├─LICENSE               MIT授权说明文件
 └─README.md             README 文件
 ```
+
+
+# 问题
+
+>解决inotify_init1() failed: Too many open files
+
+```
+[root@go-tp]# vim  /etc/sysctl.conf
+
+添加
+fs.file-max=9000000
+fs.inotify.max_user_instances = 1000000
+fs.inotify.max_user_watches = 1000000
+
+
+sysctl -p
+```
+
+
+> # golang.org/x/net/http2
+>vendor/golang.org/x/net/http2/transport.go:416:45: undefined: os.ErrDeadlineExceeded
+
+
+```
+使用 go 1.17以上版本
+```
