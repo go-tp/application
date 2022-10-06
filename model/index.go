@@ -83,3 +83,6 @@ func IndexM(c *gin.Context) interface{} {
 }
 
 
+func LoginM(c *gin.Context) interface{} {
+	return "login"
+}

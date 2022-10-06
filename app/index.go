@@ -20,7 +20,15 @@ func Index(c *gin.Context){
 }
 
 func Login(c *gin.Context){
-	c.String(200, "login")
+	
+	data := model.LoginM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 func Logout(c *gin.Context){
