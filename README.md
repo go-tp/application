@@ -1,6 +1,16 @@
 # go-tp
 
-目录结构
+>快速开始
+```
+go mod init [项目名]
+go mod vendor
+go mod tidy
+
+热更新[go install github.com/pilu/fresh@laster]
+fresh 
+```
+
+>目录结构
 ```
 项目名
 ├─app                controller应用目录
