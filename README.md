@@ -1,5 +1,19 @@
 # go-tp
 
+> 拉取代码
+```
+git clone https://github.com/go-tp/application
+或
+git clone https://github.com/go-tp/application gtp [项目名]
+```
+
+> 修改配置文件 
+>>具体参数根据本地配置进行修改
+```
+config.yaml.bak 修改为 config.yaml
+```
+
+
 >快速开始
 ```
 # 更新依赖
@@ -8,6 +22,12 @@ go mod vendor
 
 # 热更新[go install github.com/pilu/fresh@laster]
 fresh 
+```
+
+>编译或打包
+```
+go run main.go
+go build main.go
 ```
 
 >目录结构
@@ -19,8 +39,8 @@ fresh
 │  │─index.go        首页模块
 │  └─ ...  
 │
-├─config                应用配置目录
-│  └─app.ini            模块配置目录
+├─configs                应用配置目录
+│  └─conf.go            读取配置文件
 │
 ├─model                 模型目录
 │  └─index.go           模型文件
@@ -39,6 +59,7 @@ fresh
 │
 ├─extend                扩展类库目录
 ├─vendor                第三方类库目录（go get依赖库）
+├─config.yaml.bak       配置文件，记得根据自身情况修改，后期进行优化
 ├─go.mod                go get 定义文件
 ├─LICENSE               MIT授权说明文件
 └─README.md             README 文件
