@@ -98,6 +98,12 @@ func LoginM(c *gin.Context) interface{} {
 }
 ```
 # jwt
+	
+> 修改config.yaml
+```
+jwt:
+  Secret: 秘钥部分
+```
 
 > 中间件使用
 ```
