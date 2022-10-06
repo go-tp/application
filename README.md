@@ -2,10 +2,11 @@
 
 >快速开始
 ```
-go mod vendor
+# 更新依赖
 go mod tidy
+go mod vendor
 
-热更新[go install github.com/pilu/fresh@laster]
+# 热更新[go install github.com/pilu/fresh@laster]
 fresh 
 ```
 
