@@ -1,2 +1,4 @@
 *.vs
 config.yaml
+vendor/*
+tmp/*
