@@ -31,11 +31,12 @@ func MysqlInit() (*sql.DB, error) {
     }
 
     // 设置数据库的最大连接数
+    dbins.SetConnMaxLifetime(2000)
 
-    dbins.SetConnMaxLifetime(100)
+    // 设置最大打开连接数
+    dbins.SetMaxOpenConns(2000)
 
     // 设置数据库最大的闲置连接数
-
     dbins.SetMaxIdleConns(10)
 
     // 验证连接

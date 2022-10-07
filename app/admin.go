@@ -2,26 +2,56 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"gtp/model"
 )
 
 // 新增栏目
 func AddTopic(c *gin.Context){
-	c.String(200, "AddTopic")
+	data := model.AddTopicM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 编辑栏目
 func EditTopic(c *gin.Context){
-	c.String(200, "EditTopic")
+	data := model.EditTopicM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 读取栏目
 func GetTopic(c *gin.Context){
-	c.String(200, "GetTopic")
+	data := model.GetTopicM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 删除栏目
 func DelTopic(c *gin.Context){
-	c.String(200, "DelTopic")
+	data := model.DelTopicM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 新增文章
@@ -38,6 +68,20 @@ func EditArticle(c *gin.Context){
 func GetArticle(c *gin.Context){
 	c.String(200, "GetArticle")
 }
+
+// 读取文章列表
+func GetArticleList(c *gin.Context){
+
+	// data := model.GetArticleListM(c)
+	// if data != nil {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"code": http.StatusOK,
+	// 		"msg":  "请求成功",
+	// 		"data": data,
+	// 	})
+	// }
+}
+
 
 // 删除文章
 func DelArticle(c *gin.Context){

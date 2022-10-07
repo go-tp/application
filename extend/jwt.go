@@ -63,10 +63,10 @@ func JWTAuth() gin.HandlerFunc {
 			c.Abort()
 			return
 	   }
-
-	   fmt.Println("username:",username)
-	   fmt.Println("err:",err)
-		// fmt.Println(token.Claims.(jwt.MapClaims)["username"])
+	   // 中间件传参 使用c.Get("username") 获取
+	   c.Set("username",username)
+	//    fmt.Println("username:",username)
+	//    fmt.Println("err:",err)
 		return
 	}
  }

@@ -11,6 +11,11 @@ func Init() *gin.Engine {
 
 	route = gin.Default()
 
+	// 连接 mysql
+	extend.MysqlInit()
+	// 连接 redis
+	extend.RedisInit()
+
 	base := route.Group("/")
 	base.Use()
 	{
@@ -43,6 +48,7 @@ func Init() *gin.Engine {
 		admin.POST("/addarticle", AddArticle)
 		admin.POST("/editarticle", EditArticle)
 		admin.POST("/getarticle", GetArticle)
+		admin.POST("/getarticlelist", GetArticleList)
 		admin.POST("/delarticle", DelArticle)
 	}
 
