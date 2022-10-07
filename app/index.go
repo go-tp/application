@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// 首页
 func Index(c *gin.Context){
 
 	//c.String(200, "login")
@@ -19,6 +20,7 @@ func Index(c *gin.Context){
 	}
 }
 
+// 登录
 func Login(c *gin.Context){
 	
 	data := model.LoginM(c)
@@ -31,10 +33,17 @@ func Login(c *gin.Context){
 	}
 }
 
+// 登出
 func Logout(c *gin.Context){
 	c.String(200, "logout")
 }
 
+// 菜单
 func Menu(c *gin.Context){
 	c.String(200, "menu")
+}
+
+// 上传图片
+func Upload(c *gin.Context){
+	c.String(200, "upload")
 }

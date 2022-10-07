@@ -15,25 +15,35 @@ func Init() *gin.Engine {
 	base.Use()
 	{
 		base.GET("/", Index)
-		base.POST("/login", Login)
+		base.POST("/base/login", Login)
 		// 单方法使用jwt中间件
-		base.POST("/logout", extend.JWTAuth(),Logout)
-		base.POST("/menu", Menu)
+		base.POST("/base/logout", extend.JWTAuth(),Logout)
+		base.POST("/base/menu", Menu)
+		base.POST("/base/upload", Upload)
 	}
 	
-	apiArticle := route.Group("/api")
+	api := route.Group("/api")
 	// 一组使用jwt验证
-	apiArticle.Use(extend.JWTAuth())
+	api.Use(extend.JWTAuth())
 	{
-		apiArticle.POST("/article/getTopic", ApiGetArtList)
-		apiArticle.POST("/article/getArtList", ApiGetTopic)
+		api.POST("/gettopic", ApiGetTopic)
+		api.POST("/getarticle", ApiGetArticle)
 	}
 
-	adminArticle := route.Group("/admin")
-	adminArticle.Use()
+	admin := route.Group("/admin")
+	admin.Use()
 	{
-		adminArticle.POST("/article/getTopic", AdminGetArtTopic)
-		adminArticle.POST("/article/getArtList", AdminGetArtList)
+		// 栏目
+		admin.POST("/addtopic", AddTopic)
+		admin.POST("/edittopic", EditTopic)
+		admin.POST("/gettopic", GetTopic)
+		admin.POST("/deltopic", DelTopic)
+
+		// 文章
+		admin.POST("/addarticle", AddArticle)
+		admin.POST("/editarticle", EditArticle)
+		admin.POST("/getarticle", GetArticle)
+		admin.POST("/delarticle", DelArticle)
 	}
 
 	return route
