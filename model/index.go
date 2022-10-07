@@ -5,7 +5,6 @@ import (
 	"gtp/extend"
 	_"fmt"
 	_"github.com/garyburd/redigo/redis"
-	"strconv"
 )
 
 func IndexM(c *gin.Context) interface{} {
@@ -34,25 +33,34 @@ func UploadM(c *gin.Context) interface{} {
     file, errLoad := c.FormFile("file")
     if errLoad != nil {
         msg := "获取上传文件错误"
-    
         return msg
     }
-    // log.Info("Upload 上传文件：" + file.Filename)
  
     // 上传文件到指定的路径
     ret := make(map[string]string)
-	now := extend.Now()
-    ret["fileName"] = strconv.Itoa(int(now)) + file.Filename
+	// 名称确保唯一
+	uuid := extend.Uuid()
+    ret["fileName"] = uuid + file.Filename
     ret["fileNameOrigin"] = file.Filename
+	
     // public/upload 文件夹下
-    filePath := "UploadPath" + ret["fileName"]
-    
- 
+    filePath := "./public/upload/"+ ret["fileName"]
+
     err := c.SaveUploadedFile(file, filePath)
     if err != nil {
         return err
     }
     
-    ret["picUrl"] ="FileUrl" + ret["fileName"]
+    ret["picUrl"] = ret["fileName"]
 	return ret["picUrl"]
+}
+
+func LogoutM(c *gin.Context) interface{} {
+	// 清除缓存
+	// 清除redis
+	return "退出成功."
+}
+
+func MenuM(c *gin.Context) interface{} {
+	return "菜单."
 }

@@ -32,12 +32,26 @@ func Login(c *gin.Context){
 
 // 登出
 func Logout(c *gin.Context){
-	c.String(200, "logout")
+	data := model.LogoutM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 菜单
 func Menu(c *gin.Context){
-	c.String(200, "menu")
+	data := model.MenuM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 上传图片
