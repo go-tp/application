@@ -5,11 +5,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"fmt"
-	"database/sql"	
+	"database/sql"
 )
 
 var Db *sqlx.DB
-
 
 func MysqlInit() (*sql.DB, error) {
 
@@ -58,7 +57,6 @@ func MysqlInit() (*sql.DB, error) {
 func DbClose() {
 	Db.Close()
 }
-
 
 // demo
 

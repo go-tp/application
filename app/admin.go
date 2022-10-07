@@ -56,34 +56,61 @@ func DelTopic(c *gin.Context){
 
 // 新增文章
 func AddArticle(c *gin.Context){
-	c.String(200, "AddArticle")
+	data := model.AddArticleM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 编辑文章
 func EditArticle(c *gin.Context){
-	c.String(200, "EditArticle")
+	data := model.AddArticleM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 读取文章
 func GetArticle(c *gin.Context){
-	c.String(200, "GetArticle")
+	data := model.AddArticleM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 // 读取文章列表
 func GetArticleList(c *gin.Context){
-
-	// data := model.GetArticleListM(c)
-	// if data != nil {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"code": http.StatusOK,
-	// 		"msg":  "请求成功",
-	// 		"data": data,
-	// 	})
-	// }
+	data := model.AddArticleM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }
 
 
 // 删除文章
 func DelArticle(c *gin.Context){
-	c.String(200, "DelArticle")
+	data := model.AddArticleM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }

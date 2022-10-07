@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"fmt"
+	"time"
 )
 
 /*
@@ -22,12 +23,11 @@ claims := jwt.MapClaims{
 }
 */
 
-
 // 生成jwt
 func GenerateToken(user string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": user,
-    // "exp":      time.Now().Add(time.Hour * 2).Unix(),// 可以添加过期时间
+    	"exp": time.Now().Add(time.Hour * 48).Unix(),// 可以添加过期时间
 	})
 	secret := configs.ReadYaml().JWT.Secret
 	return token.SignedString([]byte(secret))//对应的字符串请自行生成，最后足够使用加密后的字符串
@@ -36,25 +36,23 @@ func GenerateToken(user string) (string, error) {
 // 中间件身份认证
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-	   //拿到token
-	   tokenStr := c.Request.Header.Get("Authorization")
-	   
-	   if tokenStr == "" {
-		  c.JSON(http.StatusOK, gin.H{
-			 "status": -1,
-			 "msg":    "token为空，请携带token",
-			 "data":   nil,
-		  })
-		  c.Abort()
-		  return
-	   }
-	   tokenStr = tokenStr[len("Bearer "):]
+		//拿到token
+		tokenStr := c.Request.Header.Get("Authorization")
 
-	   
+		if tokenStr == "" {
+			c.JSON(http.StatusOK, gin.H{
+				"status": -1,
+				"msg":    "token为空，请携带token",
+				"data":   nil,
+			})
+			c.Abort()
+			return
+		}
+		tokenStr = tokenStr[len("Bearer "):]
 
-	   token1,_ := ParseToken(tokenStr)
-	   username,err := token1["username"]
-	   if(err != true){
+		token1,_ := ParseToken(tokenStr)
+		username,err := token1["username"]
+		if(err != true){
 			c.JSON(http.StatusOK, gin.H{
 				"status": -1,
 				"msg":    "token错误",
@@ -62,15 +60,12 @@ func JWTAuth() gin.HandlerFunc {
 			})
 			c.Abort()
 			return
-	   }
-	   // 中间件传参 使用c.Get("username") 获取
-	   c.Set("username",username)
-	//    fmt.Println("username:",username)
-	//    fmt.Println("err:",err)
+		}
+		// 中间件传参 使用c.Get("username") 获取
+		c.Set("username",username)
 		return
 	}
  }
-
 
  // jwt解密
 func ParseToken(tokenStr string) (jwt.MapClaims, error) {

@@ -14,7 +14,7 @@ type queryAddTopic struct {
 
 func AddTopicM(c *gin.Context) interface{} {
 	username,_ := c.Get("username")
-	fmt.Println(username)
+	fmt.Println("username:",username)
 
 	// 获取参数
 	query := queryAddTopic{}
@@ -45,7 +45,7 @@ type queryEditTopic struct {
 
 func EditTopicM(c *gin.Context) interface{} {
 	username,_ := c.Get("username")
-	fmt.Println(username)
+	fmt.Println("username:",username)
 
 	// 获取参数
 	query := queryEditTopic{}
@@ -137,7 +137,7 @@ type queryDelTopic struct {
 
 func DelTopicM(c *gin.Context) interface{} {
 	username,_ := c.Get("username")
-	fmt.Println(username)
+	fmt.Println("username:",username)
 
 	// 获取参数
 	query := queryDelTopic{}
@@ -159,4 +159,37 @@ func DelTopicM(c *gin.Context) interface{} {
 	// 影响行数
 	n,_ := result.RowsAffected()
 	return n
+}
+
+type queryAddArticle struct {
+	Title string `form:"title" json:"title"`
+	Litpic string `form:"litpic" json:"litpic"`
+	Content string `form:"content" json:"content"`
+	Topic_id int `form:"topic_id" json:"topic_id"`
+}
+
+func AddArticleM(c *gin.Context) interface{} {
+	username,_ := c.Get("username")
+	fmt.Println("username:",username)
+
+	// 获取参数
+	query := queryAddArticle{}
+	c.ShouldBind(&query)
+	title := query.Title
+	litpic := query.Litpic
+	content := query.Content
+	topic_id := query.Topic_id
+	fmt.Println(content)
+	if topic_id<=0{ return "topic_id为空"}
+	// 连接 mysql
+	mysqlCon,_ := extend.MysqlInit()
+	// 连接 redis
+	extend.RedisInit()
+	now := extend.Now()
+	// 执行插入
+	result, _ := mysqlCon.Exec("INSERT INTO article (title,status,created_at,updated_at,litpic,content,topic_id,user_id) VALUES (?,?,?,?,?,?,?,?)",title,"1",now,now,litpic,content,topic_id,username)
+	// // 获取插入id
+	id, _ := result.LastInsertId()
+	defer mysqlCon.Close()
+	return id
 }
