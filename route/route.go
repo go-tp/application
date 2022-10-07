@@ -17,21 +17,21 @@ func Init() *gin.Engine {
 		base.GET("/", Index)
 		base.POST("/base/login", Login)
 		// 单方法使用jwt中间件
-		base.POST("/base/logout", extend.JWTAuth(),Logout)
-		base.POST("/base/menu", Menu)
-		base.POST("/base/upload", Upload)
+		base.POST("/base/logout", extend.JWTAuth(), Logout)
+		base.POST("/base/menu", extend.JWTAuth(), Menu)
+		base.POST("/base/upload", extend.JWTAuth(), Upload)
 	}
 	
 	api := route.Group("/api")
-	// 一组使用jwt验证
-	api.Use(extend.JWTAuth())
+	api.Use()
 	{
 		api.POST("/gettopic", ApiGetTopic)
 		api.POST("/getarticle", ApiGetArticle)
 	}
 
 	admin := route.Group("/admin")
-	admin.Use()
+	// 一组使用jwt验证
+	admin.Use(extend.JWTAuth())
 	{
 		// 栏目
 		admin.POST("/addtopic", AddTopic)
