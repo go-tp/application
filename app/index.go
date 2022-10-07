@@ -8,7 +8,6 @@ import (
 
 // 首页
 func Index(c *gin.Context){
-
 	data := model.IndexM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -21,7 +20,6 @@ func Index(c *gin.Context){
 
 // 登录
 func Login(c *gin.Context){
-	
 	data := model.LoginM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
@@ -43,6 +41,13 @@ func Menu(c *gin.Context){
 }
 
 // 上传图片
-func Upload(c *gin.Context){
-	c.String(200, "upload")
+func Upload(c *gin.Context) {
+    data := model.UploadM(c)
+	if data != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": http.StatusOK,
+			"msg":  "请求成功",
+			"data": data,
+		})
+	}
 }

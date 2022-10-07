@@ -4,7 +4,6 @@ import (
 	"gtp/configs"
 	"strconv"
 	"time"
-
 	"github.com/garyburd/redigo/redis"
 )
 
@@ -53,3 +52,21 @@ func StartRedis() {
 	Pool = PoolInitRedis(Rdb_url, Rdb_db, Rdb_pwd)
 	Rdb = Pool.Get()
 }
+
+// redis 使用
+// r_key := "indexapi:getindex"
+// rdb := extend.Pool
+// conn := rdb.Get()
+// defer conn.Close()
+// // redis 设置
+// conn.Do("Set", r_key,"2")
+// // redis 获取
+// v,_ := conn.Do("GET",r_key)
+
+// v1,_ := redis.String(v,nil)
+// fmt.Printf("type=> %T\n", v)
+// // unit8
+// fmt.Println(v)
+
+// // string
+// fmt.Println(v1)

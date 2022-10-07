@@ -3,84 +3,15 @@ package model
 import (
 	"github.com/gin-gonic/gin"
 	"gtp/extend"
-	"fmt"
-	"github.com/garyburd/redigo/redis"
+	_"fmt"
+	_"github.com/garyburd/redigo/redis"
+	"strconv"
 )
 
-
-type index struct {
-	Id int `form:"id" json:"id"`
-}
-
 func IndexM(c *gin.Context) interface{} {
-	// 连接 mysql
-	mysqlCon,_ := extend.MysqlInit()
-	// 连接 redis
-	extend.RedisInit()
-
-	//c.String(200, Db)
-
-	// redis 使用
-	r_key := "indexapi:getindex"
-	rdb := extend.Pool
-	conn := rdb.Get()
-	defer conn.Close()
-	// redis 设置
-	conn.Do("Set", r_key,"2")
-	// redis 获取
-	v,_ := conn.Do("GET",r_key)
-
-	v1,_ := redis.String(v,nil)
-	fmt.Printf("type=> %T\n", v)
-	// unit8
-	fmt.Println(v)
-	
-	// string
-	fmt.Println(v1)
-	
-
-
-	
-	// mysql
-
-	result, _ := mysqlCon.Exec("INSERT INTO article (title, content, status,created_at,updated_at) VALUES (?,?,?, ?, ?)","文章1","正文1","1","1664378735","1664378735")
-
-	fmt.Println("result:",  result)
-
-
-	// 插入单条
-	stmt, _ := mysqlCon.Prepare("INSERT article SET title=?,content=?,status=?,created_at=?,updated_at=?")
-	res, _ := stmt.Exec("文章1","正文1","1","1664378735","1664378735")
-
-	id, _ := res.LastInsertId()
-
-	fmt.Println("id:",      id)
-
-	// 查询单条
-	var title, content string
-	var status int
-	mysqlCon.QueryRow("SELECT title,content,status FROM article WHERE id=?", 1).Scan(&title, &content, &status)
-
-	fmt.Println("title:",   title)
-	fmt.Println("content:", content)
-	fmt.Println("status:",  status)
-
-	// 查询多条
-
-	// 事务
-	tx, err := mysqlCon.Begin()
-	fmt.Println("err:",     err)
-
-	err1 := tx.Commit()
-	fmt.Println("err:",     err1)
-
-	err2 := tx.Rollback()
-	fmt.Println("err:",     err2)
-
-
-	//r := index{}
-	return v1
+	return "Welcome to go-tp.com."
 }
+
 
 
 func LoginM(c *gin.Context) interface{} {
@@ -96,4 +27,32 @@ func LoginM(c *gin.Context) interface{} {
 	// 生成jwt-token
 	token,_ := extend.GenerateToken(UserId)
 	return token
+}
+
+// 上传图片
+func UploadM(c *gin.Context) interface{} {
+    file, errLoad := c.FormFile("file")
+    if errLoad != nil {
+        msg := "获取上传文件错误"
+    
+        return msg
+    }
+    // log.Info("Upload 上传文件：" + file.Filename)
+ 
+    // 上传文件到指定的路径
+    ret := make(map[string]string)
+	now := extend.Now()
+    ret["fileName"] = strconv.Itoa(int(now)) + file.Filename
+    ret["fileNameOrigin"] = file.Filename
+    // public/upload 文件夹下
+    filePath := "UploadPath" + ret["fileName"]
+    
+ 
+    err := c.SaveUploadedFile(file, filePath)
+    if err != nil {
+        return err
+    }
+    
+    ret["picUrl"] ="FileUrl" + ret["fileName"]
+	return ret["picUrl"]
 }

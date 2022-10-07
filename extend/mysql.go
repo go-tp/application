@@ -55,38 +55,46 @@ func MysqlInit() (*sql.DB, error) {
 
 }
 
-
-// func MysqlInit() {
-// 	var err error
-// 	mysql_url := configs.ReadYaml().Mysql.Username + ":" + configs.ReadYaml().Mysql.Password + "@tcp(" + configs.ReadYaml().Mysql.Host + ":" +
-// 		configs.ReadYaml().Mysql.Port + ")/" + configs.ReadYaml().Mysql.Database + "?charset=utf8mb4&parseTime=True"
-
-// 	// fmt.Println("url", url)
-// 	Db, err = sqlx.Open("mysql", mysql_url)
-// 	if err != nil {
-// 		// fmt.Println("数据库连接错误: ", err)
-// 		panic("数据库连接错误: " + err.Error())
-// 	}
-// 	//设置连接池最大连接数
-// 	Db.SetMaxOpenConns(100)
-// 	//设置连接池最大空闲连接数
-// 	Db.SetMaxIdleConns(20)
-
-// 	// 验证是否连接
-// 	ctx := context.Background()
-// 	if err = Db.PingContext(ctx); err != nil {
-// 		// fmt.Println("数据库未连接: ", err)
-// 		panic("数据库未连接: " + err.Error())
-// 	}
-
-// 	// fmt.Println("数据库连接成功: ", Db.Ping())
-// 	// Rdb, err = redis.Dial("tcp", Rdb_url, redis.DialDatabase(Rdb_db), redis.DialPassword(Rdb_pwd))
-// 	// if err != nil {
-// 	// 	panic("redis连接错误: " + err.Error())
-// 	// }
-// 	//StartRedis()
-// }
-
 func DbClose() {
 	Db.Close()
 }
+
+
+// demo
+
+// 连接 mysql
+// mysqlCon,_ := extend.MysqlInit()
+
+// result, _ := mysqlCon.Exec("INSERT INTO article (title, content, status,created_at,updated_at) VALUES (?,?,?, ?, ?)","文章1","正文1","1","1664378735","1664378735")
+
+// fmt.Println("result:",  result)
+
+
+// // 插入单条
+// stmt, _ := mysqlCon.Prepare("INSERT article SET title=?,content=?,status=?,created_at=?,updated_at=?")
+// res, _ := stmt.Exec("文章1","正文1","1","1664378735","1664378735")
+
+// id, _ := res.LastInsertId()
+
+// fmt.Println("id:",      id)
+
+// // 查询单条
+// var title, content string
+// var status int
+// mysqlCon.QueryRow("SELECT title,content,status FROM article WHERE id=?", 1).Scan(&title, &content, &status)
+
+// fmt.Println("title:",   title)
+// fmt.Println("content:", content)
+// fmt.Println("status:",  status)
+
+// // 查询多条
+
+// // 事务
+// tx, err := mysqlCon.Begin()
+// fmt.Println("err:",     err)
+
+// err1 := tx.Commit()
+// fmt.Println("err:",     err1)
+
+// err2 := tx.Rollback()
+// fmt.Println("err:",     err2)
