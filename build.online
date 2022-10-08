@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker build -f Dockerfile.online -t go-tp/gtp .

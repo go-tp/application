@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker stop gtp
+docker rm gtp
+docker stop go
+
+docker run --name gtp -p 778:7777 -dit go-tp/gtp
