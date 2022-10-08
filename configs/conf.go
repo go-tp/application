@@ -15,7 +15,7 @@ type Config struct {
 	Logs   *LogsConfig   `yaml:"logs"`
 	Device *DeviceConfig `yaml:"device"`
 	JWT    *JwtConfig    `yaml:"jwt"`
-	
+	Oss    *OssConfig    `yaml:"oss"`
 }
 
 type MysqlConfig struct {
@@ -44,6 +44,10 @@ type DeviceConfig struct {
 
 type JwtConfig struct {
 	Secret string `yaml:"Secret"`
+}
+
+type OssConfig struct {
+	Url string `yaml:"Url"`
 }
 
 func ReadYaml() *Config {

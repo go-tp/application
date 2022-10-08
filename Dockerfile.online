@@ -1,8 +1,9 @@
 FROM scratch
 
-WORKDIR $GOPATH/src/
-COPY ./build/gtp.linux $GOPATH/src/gtp
-COPY ./config.yaml $GOPATH/src/config.yaml
+WORKDIR /www/
+COPY ./build/gtp.linux /www/gtp
+COPY ./config.yaml /www/config.yaml
+COPY ./public/ /www/public
 
 EXPOSE 7777
 CMD [ "./gtp" ]

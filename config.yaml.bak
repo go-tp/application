@@ -22,3 +22,6 @@ device:
 
 jwt:
   secret: 86e5c5fabe39c9cca2642a62d314c07e
+
+oss:
+  Url: https://img.go-tp.com

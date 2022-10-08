@@ -5,10 +5,11 @@ import (
 	"gtp/extend"
 	"fmt"
 	_"github.com/garyburd/redigo/redis"
+	"gtp/configs"
 )
 
 func IndexM(c *gin.Context) interface{} {
-	return "Welcome to go-tp.com."
+	return "."
 }
 
 
@@ -49,8 +50,10 @@ func LoginM(c *gin.Context) interface{} {
 	token,_ := extend.GenerateToken(userid)
 
 	// todo 存入redis
+	t1 := make(map[string]interface{})
+	t1["token"] = token
 
-	return token
+	return t1
 }
 
 // 上传图片
@@ -65,8 +68,8 @@ func UploadM(c *gin.Context) interface{} {
     ret := make(map[string]string)
 	// 名称确保唯一
 	uuid := extend.Uuid()
-    ret["fileName"] = uuid + file.Filename
-    ret["fileNameOrigin"] = file.Filename
+    ret["fileName"] = uuid + extend.Md5(file.Filename)
+    ret["fileNameOrigin"] = extend.Md5(file.Filename)
 	
     // public/upload 文件夹下
     filePath := "./public/upload/"+ ret["fileName"]
@@ -75,8 +78,9 @@ func UploadM(c *gin.Context) interface{} {
     if err != nil {
         return err
     }
-    
-    ret["picUrl"] = ret["fileName"]
+    fmt.Println("config.url:",configs.ReadYaml().Oss.Url)
+    ret["picUrl"] = configs.ReadYaml().Oss.Url +"/"+ ret["fileName"]
+	fmt.Println("picUrl:",ret["picUrl"])
 	return ret["picUrl"]
 }
 
@@ -132,10 +136,11 @@ func MenuM(c *gin.Context) interface{} {
 	t1["created_at"] = adminUser.created_at
 	t1["updated_at"] = adminUser.updated_at
 
-	t_ := make(map[int]interface{})
-	t_[0] = adminUser.username
 
-	t1["roles"] = t_
+	roles := []string{}
+	roles = append(roles, adminUser.username)
+
+	t1["roles"] = roles
 
 	type admin_role struct{
 		id int
@@ -224,6 +229,7 @@ func MenuM(c *gin.Context) interface{} {
 			}
 			t1["name"] = adminPower.controller
 			t1["status"] = true
+			t1["action"] = ""
 
 			meta := make(map[string]interface{})
 			meta["icon"] = "fa "+*adminPower.ico
@@ -255,9 +261,9 @@ func MenuM(c *gin.Context) interface{} {
 				t2["id"] = adminPower.id
 				t2["controller"] = adminPower.controller
 				if *adminPower.is_show == 1{
-					t1["hidden"] = false
+					t2["hidden"] = false
 				}else{
-					t1["hidden"] = true
+					t2["hidden"] = true
 				}
 				t2["action"] = adminPower.action
 				t2["name"] = *adminPower.controller + *adminPower.action
@@ -269,7 +275,10 @@ func MenuM(c *gin.Context) interface{} {
 				t2["meta"] = meta1
 				result_child = append(result_child, t2)
 			}
-			t1["children"] = result_child
+			if len(result_child) != 0{
+				t1["children"] = result_child
+			}
+			
 			result_data = append(result_data, t1)
 
 		}

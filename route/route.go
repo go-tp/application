@@ -16,6 +16,9 @@ func Init() *gin.Engine {
 	// 连接 redis
 	extend.RedisInit()
 
+	// option
+	route.Use(extend.Option(route))
+
 	base := route.Group("/")
 	base.Use()
 	{
