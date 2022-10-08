@@ -68,7 +68,7 @@ func AddArticle(c *gin.Context){
 
 // 编辑文章
 func EditArticle(c *gin.Context){
-	data := model.AddArticleM(c)
+	data := model.EditArticleM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
@@ -80,7 +80,7 @@ func EditArticle(c *gin.Context){
 
 // 读取文章
 func GetArticle(c *gin.Context){
-	data := model.AddArticleM(c)
+	data := model.GetArticleM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
@@ -92,7 +92,7 @@ func GetArticle(c *gin.Context){
 
 // 读取文章列表
 func GetArticleList(c *gin.Context){
-	data := model.AddArticleM(c)
+	data := model.GetArticleListM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
@@ -105,7 +105,7 @@ func GetArticleList(c *gin.Context){
 
 // 删除文章
 func DelArticle(c *gin.Context){
-	data := model.AddArticleM(c)
+	data := model.DelArticleM(c)
 	if data != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"code": http.StatusOK,
